@@ -17,7 +17,7 @@ const tsBinaryMap = {
     '0': 'tstststs', '1': 'Tstststs', '2': 'tsTststs', '3': 'TSTststs',
     '4': 'tstsTsts', '5': 'TstsTsts', '6': 'tsTsTsts', '7': 'TSTsTsts',
     '8': 'tststSTs', '9': 'TststSTs',
-    ' ': ' '  // Preserving spaces
+    ' ': '\u200C'  // Use zero-width non-joiner to represent space
 };
 
 // Reverse map for translating TS binary back to English
@@ -49,7 +49,7 @@ function translateToEnglish() {
     let buffer = '';
 
     for (let char of inputText) {
-        if (char === ' ') {  // Preserve spaces during reverse translation
+        if (char === '\u200C') {  // Check for zero-width non-joiner (used for spaces)
             output += ' ';
             buffer = '';  // Reset buffer if space is found
         } else {
