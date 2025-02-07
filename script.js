@@ -1,4 +1,4 @@
-// Object mapping for TS Binary conversion including numbers
+// Object mapping for TS Binary conversion including numbers, letters, and common characters
 const tsBinaryMap = {
     'A': 'tsTststS', 'B': 'tsTstSst', 'C': 'tsTstSSt', 'D': 'tsTsTsst',
     'E': 'tsTsTstS', 'F': 'tsTsTsSt', 'G': 'tsTsTsSS', 'H': 'tsTSTsst',
@@ -20,6 +20,19 @@ const tsBinaryMap = {
     ' ': '~'  // Use tilde (~) to represent space during translation
 };
 
+// Generate unique "ts binary" patterns for any character not in tsBinaryMap
+function getTsBinaryForChar(char) {
+    if (!tsBinaryMap[char]) {
+        // If character is not in the map, generate a unique binary-like pattern
+        let binaryPattern = '';
+        for (let i = 0; i < char.charCodeAt(0) % 8; i++) {
+            binaryPattern += (Math.random() > 0.5) ? 'T' : 'S';  // Randomly choose T or S
+        }
+        tsBinaryMap[char] = 'ts' + binaryPattern;
+    }
+    return tsBinaryMap[char];
+}
+
 // Reverse map for translating TS binary back to English
 const reverseTsBinaryMap = Object.entries(tsBinaryMap).reduce((acc, [key, value]) => {
     acc[value] = key;
@@ -32,11 +45,7 @@ function translateToTS() {
     let output = '';
 
     for (let char of inputText) {
-        if (tsBinaryMap[char]) {
-            output += tsBinaryMap[char];
-        } else {
-            output += char;  // Keep non-alphabet characters as they are
-        }
+        output += getTsBinaryForChar(char);  // Use dynamic generation for missing characters
     }
 
     document.getElementById('outputText').value = output;
